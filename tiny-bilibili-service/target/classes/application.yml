@@ -1,0 +1,13 @@
+# profile
+spring:
+  profiles:
+    active: test
+  devtools:
+    restart:
+      enabled: true
+
+# mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.moon.tinybilibili.dao
+
