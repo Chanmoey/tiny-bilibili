@@ -17,6 +17,11 @@ public class MD5Util {
 		return DigestUtils.md5Hex(getContentBytes(content, charset));
 	}
 
+	public static String sign(String content, String salt) {
+		content = content + salt;
+		return DigestUtils.md5Hex(getContentBytes(content, "UTF-8"));
+	}
+
 	public static boolean verify(String content, String sign, String salt, String charset) {
 		content = content + salt;
 		String mysign = DigestUtils.md5Hex(getContentBytes(content, charset));
