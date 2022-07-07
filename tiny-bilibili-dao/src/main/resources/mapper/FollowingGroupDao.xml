@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moon.tinybilibili.dao.FollowingGroupDao">
+
+    <select id="getByType" parameterType="java.lang.String" resultType="com.moon.tinybilibili.domain.FollowingGroup">
+        select *
+        from t_following_group
+        where `type` = #{type}
+    </select>
+
+    <select id="getById" parameterType="java.lang.Long" resultType="com.moon.tinybilibili.domain.FollowingGroup">
+        select *
+        from t_following_group
+        where id = #{id}
+    </select>
+
+    <select id="getByUserId" parameterType="java.lang.Long" resultType="com.moon.tinybilibili.domain.FollowingGroup">
+        select *
+        from t_following_group
+        where userId = #{userId}
+           or `type` in ('0', '1', '2')
+    </select>
+
+
+</mapper>

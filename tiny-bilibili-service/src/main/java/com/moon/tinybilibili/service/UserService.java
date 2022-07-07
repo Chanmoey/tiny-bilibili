@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Chanmoey
@@ -123,5 +125,9 @@ public class UserService {
         if (userDao.updateUserInfos(userInfo) != 1) {
             throw new ConditionException("修改UserInfo信息失败!");
         }
+    }
+
+    public List<UserInfo> getUserInfoByUserIds(Set<Long> userIdList) {
+        return userDao.getUserInfoByUserIds(userIdList);
     }
 }

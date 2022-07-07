@@ -32,6 +32,8 @@ public class UserInfo {
 
     private Date updateTime;
 
+    private Boolean followed;
+
     public void setDefaultData() {
         this.nick = UserConstant.DEFAULT_NICK;
         this.birth = UserConstant.DEFAULT_BIRTH;
