@@ -1,6 +1,8 @@
 package com.moon.tinybilibili.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.moon.tinybilibili.dao.UserDao;
+import com.moon.tinybilibili.domain.PageResult;
 import com.moon.tinybilibili.domain.User;
 import com.moon.tinybilibili.domain.UserInfo;
 import com.moon.tinybilibili.domain.exception.ConditionException;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -129,5 +132,19 @@ public class UserService {
 
     public List<UserInfo> getUserInfoByUserIds(Set<Long> userIdList) {
         return userDao.getUserInfoByUserIds(userIdList);
+    }
+
+    public PageResult<UserInfo> pageListUserInfos(JSONObject params) {
+        Integer no = params.getInteger("no");
+        Integer size = params.getInteger(("size"));
+        params.put("start", (no - 1) * size);
+        params.put("limit", size);
+        Integer total = userDao.pageCountUserInfos(params);
+        List<UserInfo> list = new ArrayList<>();
+        if (total > 0) {
+            list = userDao.pageListUserInfos(params);
+        }
+
+        return new PageResult<>(total, list);
     }
 }

@@ -47,4 +47,19 @@ public class UserFollowingApi {
         List<UserFollowing> result = userFollowingService.getUserFans(userId);
         return new JsonResponse<>(result);
     }
+
+    @PostMapping("/user-following-group")
+    public JsonResponse<Long> addUserFollowingGroup(@RequestBody FollowingGroup followingGroup) {
+        Long userId = userSupport.getCurrentUserId();
+        followingGroup.setUserId(userId);
+        Long groupId = userFollowingService.addUserFollowingGroup(followingGroup);
+        return new JsonResponse<>(groupId);
+    }
+
+    @GetMapping("/user-following-group")
+    public JsonResponse<List<FollowingGroup>> getUserFollowingGroup() {
+        Long userId = userSupport.getCurrentUserId();
+        List<FollowingGroup> list = userFollowingService.getUserFollowingGroups(userId);
+        return new JsonResponse<>(list);
+    }
 }

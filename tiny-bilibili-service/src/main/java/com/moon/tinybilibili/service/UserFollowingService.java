@@ -150,4 +150,32 @@ public class UserFollowingService {
 
         return fanList;
     }
+
+    public Long addUserFollowingGroup(FollowingGroup followingGroup) {
+        followingGroup.setCreateTime(new Date());
+        followingGroup.setType(UserConstant.USER_FOLLOWING_GROUP_TYPE_USER);
+        followingGroupService.addFollowingGroup(followingGroup);
+        return followingGroup.getId();
+    }
+
+    public List<FollowingGroup> getUserFollowingGroups(Long userId) {
+        return followingGroupService.getUserFollowingGroups(userId);
+    }
+
+    public List<UserInfo> checkFollowingStatus(List<UserInfo> userInfoList, Long userId) {
+        // 查询用户的关注列表
+        List<UserFollowing> userFollowingList = userFollowingDao.getUserFollowings(userId);
+
+        // 根据关注列表，设置查询列表的关注关系
+        for (UserInfo userInfo : userInfoList) {
+            userInfo.setFollowed(false);
+            for (UserFollowing userFollowing : userFollowingList) {
+                if (userFollowing.getFollowingId().equals(userInfo.getUserId())) {
+                    userInfo.setFollowed(true);
+                }
+            }
+        }
+
+        return userInfoList;
+    }
 }

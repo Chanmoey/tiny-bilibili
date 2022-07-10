@@ -1,13 +1,18 @@
 package com.moon.tinybilibili.api;
 
+import com.alibaba.fastjson.JSONObject;
 import com.moon.tinybilibili.api.support.UserSupport;
 import com.moon.tinybilibili.domain.JsonResponse;
+import com.moon.tinybilibili.domain.PageResult;
 import com.moon.tinybilibili.domain.User;
 import com.moon.tinybilibili.domain.UserInfo;
+import com.moon.tinybilibili.service.UserFollowingService;
 import com.moon.tinybilibili.service.UserService;
 import com.moon.tinybilibili.service.utils.RSAUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Chanmoey
@@ -21,6 +26,9 @@ public class UserApi {
 
     @Autowired
     private UserSupport userSupport;
+
+    @Autowired
+    private UserFollowingService userFollowingService;
 
     @GetMapping("/get-rsa-code")
     public JsonResponse<String> getRsaCode() throws Exception {
@@ -66,5 +74,24 @@ public class UserApi {
         userInfo.setUserId(userId);
         userService.updateUserInfos(userInfo);
         return JsonResponse.success();
+    }
+
+    @GetMapping("/user-info")
+    public JsonResponse<PageResult<UserInfo>> pageListUserInfos(@RequestParam Integer no,
+                                                                @RequestParam Integer size,
+                                                                String nick) {
+        Long userId = userSupport.getCurrentUserId();
+        JSONObject params = new JSONObject();
+        params.put("no", no);
+        params.put("size", size);
+        params.put("nick", nick);
+        params.put("userId", userId);
+        PageResult<UserInfo> result = userService.pageListUserInfos(params);
+        if (result.getTotal() > 0) {
+            List<UserInfo> checkedUserInfoList = userFollowingService.checkFollowingStatus(result.getList(), userId);
+            result.setList(checkedUserInfoList);
+        }
+
+        return new JsonResponse<>(result);
     }
 }
