@@ -5,19 +5,19 @@ import com.moon.tinybilibili.domain.FollowingGroup;
 import com.moon.tinybilibili.domain.JsonResponse;
 import com.moon.tinybilibili.domain.UserFollowing;
 import com.moon.tinybilibili.service.UserFollowingService;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.awt.*;
 import java.util.List;
 
 /**
  * @author Chanmoey
  * @date 2022年07月08日
  */
+@RestController
 public class UserFollowingApi {
 
     @Autowired

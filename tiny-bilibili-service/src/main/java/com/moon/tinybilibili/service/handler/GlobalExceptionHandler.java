@@ -26,6 +26,7 @@ public class GlobalExceptionHandler {
             String errorCode = conditionException.getCode();
             return new JsonResponse<>(errorCode, errorMsg);
         } else {
+            e.printStackTrace();
             return new JsonResponse<>("500", errorMsg);
         }
     }

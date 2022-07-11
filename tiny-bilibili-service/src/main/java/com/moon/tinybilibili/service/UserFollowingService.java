@@ -39,7 +39,7 @@ public class UserFollowingService {
         if (groupId == null) {
             FollowingGroup followingGroup =
                     followingGroupService.getByType(UserConstant.USER_FOLLOWING_GROUP_TYPE_DEFAULT);
-            userFollowing.setGroupId(followingGroup.getUserId());
+            userFollowing.setGroupId(followingGroup.getId());
         } else {
             FollowingGroup followingGroup = followingGroupService.getById(groupId);
             if (followingGroup == null) {

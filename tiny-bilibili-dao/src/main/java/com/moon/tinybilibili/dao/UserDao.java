@@ -1,6 +1,5 @@
 package com.moon.tinybilibili.dao;
 
-import com.alibaba.fastjson.JSONObject;
 import com.moon.tinybilibili.domain.User;
 import com.moon.tinybilibili.domain.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,7 +30,7 @@ public interface UserDao {
 
     Integer updateUserInfos(UserInfo userInfo);
 
-    List<UserInfo> getUserInfoByUserIds(@Param("userIdList") Set<Long> userIdList);
+    List<UserInfo> getUserInfoByUserIds(Set<Long> userIdList);
 
     Integer pageCountUserInfos(Map<String, Object> params);
 

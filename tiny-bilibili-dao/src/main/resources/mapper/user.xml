@@ -77,8 +77,10 @@
     </update>
 
     <select id="getUserInfoByUserIds" resultType="com.moon.tinybilibili.domain.UserInfo">
-        select *
-        from t_user_info
+        select
+        *
+        from
+        t_user_info
         where
         1=1
         <if test="userIdList != null and userIdList.size > 0">
@@ -87,7 +89,6 @@
                 #{userId}
             </foreach>
         </if>
-        userId = #{userId}
     </select>
 
     <select id="pageCountUserInfos" parameterType="java.util.Map" resultType="java.lang.Integer">
