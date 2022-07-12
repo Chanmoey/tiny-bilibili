@@ -3,6 +3,7 @@ package com.moon.tinybilibili.service;
 import com.alibaba.fastjson.JSONObject;
 import com.moon.tinybilibili.dao.UserDao;
 import com.moon.tinybilibili.domain.PageResult;
+import com.moon.tinybilibili.domain.RefreshTokenDetail;
 import com.moon.tinybilibili.domain.User;
 import com.moon.tinybilibili.domain.UserInfo;
 import com.moon.tinybilibili.domain.exception.ConditionException;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Chanmoey
@@ -69,7 +67,7 @@ public class UserService {
     }
 
     public User getUserInfo(Long userId) {
-        User user =  this.userDao.getUserById(userId);
+        User user = this.userDao.getUserById(userId);
         UserInfo userInfo = this.userDao.getUserInfoByUserId(userId);
         user.setUserInfo(userInfo);
         return user;
@@ -111,13 +109,13 @@ public class UserService {
         }
     }
 
-    public void updateUsers(User user) throws Exception{
+    public void updateUsers(User user) throws Exception {
         Long id = user.getId();
         User dbUser = userDao.getUserById(id);
-        if(dbUser == null){
+        if (dbUser == null) {
             throw new ConditionException("用户不存在！");
         }
-        if(!StringUtils.isNullOrEmpty(user.getPassword())){
+        if (!StringUtils.isNullOrEmpty(user.getPassword())) {
             String rawPassword = RSAUtil.decrypt(user.getPassword());
             String md5Password = MD5Util.sign(rawPassword, dbUser.getSalt());
             user.setPassword(md5Password);
@@ -151,5 +149,48 @@ public class UserService {
         }
 
         return new PageResult<>(total, list);
+    }
+
+    public Map<String, Object> loginForDts(User user) throws Exception {
+        String phone = user.getPhone();
+        this.validPhone(phone);
+        User dbUser = this.userDao.getUserByPhone(phone);
+        if (dbUser == null) {
+            throw new ConditionException("当前用户不存在!");
+        }
+        String rawPassword = this.getRawPassword(user.getPassword());
+        String salt = dbUser.getSalt();
+        String md5Password = MD5Util.sign(rawPassword, salt);
+
+        if (!md5Password.equals(dbUser.getPassword())) {
+            throw new ConditionException("密码错误!");
+        }
+
+        Long dbUserId = dbUser.getId();
+        String accessToken = TokenUtil.generateToken(dbUserId);
+        String refreshToken = TokenUtil.generateRefreshToken(dbUserId);
+
+        // 保存refresh token到数据库
+        userDao.deleteRefreshToken(refreshToken, dbUserId);
+        userDao.addRefreshToken(refreshToken, dbUserId, new Date());
+
+        Map<String, Object> result = new HashMap<>(4);
+        result.put("accessToken", accessToken);
+        result.put("refreshToken", refreshToken);
+        return result;
+    }
+
+    public void logout(String refreshToken, Long userId) {
+        userDao.deleteRefreshToken(refreshToken, userId);
+    }
+
+    public String refreshAccessToken(String refreshToken) throws Exception {
+        RefreshTokenDetail refreshTokenDetail = userDao.getRefreshTokenDetail(refreshToken);
+        if (refreshTokenDetail == null) {
+            throw new ConditionException("555", "refreshToken过期!");
+        }
+
+        Long userId = refreshTokenDetail.getId();
+        return TokenUtil.generateToken(userId);
     }
 }
