@@ -3,6 +3,9 @@ package com.moon.tinybilibili.api;
 import com.moon.tinybilibili.api.support.UserSupport;
 import com.moon.tinybilibili.domain.JsonResponse;
 import com.moon.tinybilibili.domain.UserMoment;
+import com.moon.tinybilibili.domain.annotation.ApiLimited;
+import com.moon.tinybilibili.domain.annotation.DataLimited;
+import com.moon.tinybilibili.domain.constant.AuthRoleConstant;
 import com.moon.tinybilibili.service.UserMomentsService;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
@@ -28,6 +31,8 @@ public class UserMomentApi {
     @Autowired
     private UserSupport userSupport;
 
+    @ApiLimited(limitedRoleCodeList = {AuthRoleConstant.ROLE_LV0})
+    @DataLimited
     @PostMapping("/user-moments")
     public JsonResponse<String> addUserMoments(@RequestBody UserMoment userMoment)
             throws MQBrokerException, RemotingException, InterruptedException, MQClientException {

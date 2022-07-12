@@ -29,6 +29,9 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private UserAuthService userAuthService;
+
     @Transactional(rollbackFor = Exception.class)
     public void addUser(User user) {
         String phone = user.getPhone();
@@ -57,6 +60,8 @@ public class UserService {
         if (this.userDao.addUserInfo(userInfo) != 1) {
             throw new ConditionException("新增用户失败!");
         }
+        // 添加用户默认权限角色
+        userAuthService.addUserDefaultRole(user.getId());
     }
 
     public User getUserByPhone(String phone) {
