@@ -1,5 +1,12 @@
 #datasource
 spring:
+  # 文件上传大小限制
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 100MB
+      max-file-size: 100MB
+      file-size-threshold: 10MB
   # datasource
   datasource:
     url: jdbc:mysql://localhost:3306/tiny_bilibili
@@ -21,3 +28,5 @@ rocketmq:
 # fastdfs
 fdfs:
   tracker-list: 192.168.40.10:22122
+  http:
+    storage-addr: http://192.168.40.10:8888/group1/
