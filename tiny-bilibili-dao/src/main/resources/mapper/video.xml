@@ -3,30 +3,26 @@
 <mapper namespace="com.moon.tinybilibili.dao.VideoDao">
 
     <insert id="addVideos" parameterType="com.moon.tinybilibili.domain.Video" useGeneratedKeys="true" keyProperty="id">
-        insert into
-            t_video(
-            id,
-            userId,
-            url,
-            thumbnail,
-            title,
-            `type`,
-            duration,
-            area,
-            description,
-            createTime
-        )values(
-                   #{id},
-                   #{userId},
-                   #{url},
-                   #{thumbnail},
-                   #{title},
-                   #{type},
-                   #{duration},
-                   #{area},
-                   #{description},
-                   #{createTime}
-               )
+        insert into t_video(id,
+                            userId,
+                            url,
+                            thumbnail,
+                            title,
+                            `type`,
+                            duration,
+                            area,
+                            description,
+                            createTime)
+        values (#{id},
+                #{userId},
+                #{url},
+                #{thumbnail},
+                #{title},
+                #{type},
+                #{duration},
+                #{area},
+                #{description},
+                #{createTime})
     </insert>
 
     <insert id="batchAddVideoTags" parameterType="java.util.List">
@@ -72,184 +68,139 @@
     </select>
 
     <select id="getVideoById" parameterType="java.lang.Long" resultType="com.moon.tinybilibili.domain.Video">
-        select
-            *
-        from
-            t_video
-        where
-            id = #{id}
+        select *
+        from t_video
+        where id = #{id}
     </select>
 
     <insert id="addVideoLike" parameterType="com.moon.tinybilibili.domain.VideoLike">
-        insert into
-            t_video_like(
-            userId,
-            videoId,
-            createTime
-        )values(
-                   #{userId},
-                   #{videoId},
-                   #{createTime}
-               )
+        insert into t_video_like(userId,
+                                 videoId,
+                                 createTime)
+        values (#{userId},
+                #{videoId},
+                #{createTime})
     </insert>
 
     <delete id="deleteVideoLike">
-        delete from
-            t_video_like
-        where
-            videoId = #{videoId}
+        delete
+        from t_video_like
+        where videoId = #{videoId}
           and userId = #{userId}
     </delete>
 
     <select id="getVideoLikes" parameterType="java.lang.Long" resultType="java.lang.Long">
-        select
-            count(1)
-        from
-            t_video_like
-        where
-            videoId = #{videoId}
+        select count(1)
+        from t_video_like
+        where videoId = #{videoId}
     </select>
 
     <select id="getVideoLikeByVideoIdAndUserId" resultType="com.moon.tinybilibili.domain.VideoLike">
-        select
-            *
-        from
-            t_video_like
-        where
-            videoId = #{videoId}
+        select *
+        from t_video_like
+        where videoId = #{videoId}
           and userId = #{userId}
     </select>
 
 
     <insert id="addVideoCollection" parameterType="com.moon.tinybilibili.domain.VideoCollection">
-        insert into
-            t_video_collection(
-            userId,
-            videoId,
-            groupId,
-            createTime
-        )values(
-                   #{userId},
-                   #{videoId},
-                   #{groupId},
-                   #{createTime}
-               )
+        insert into t_video_collection(userId,
+                                       videoId,
+                                       groupId,
+                                       createTime)
+        values (#{userId},
+                #{videoId},
+                #{groupId},
+                #{createTime})
     </insert>
 
     <delete id="deleteVideoCollection">
-        delete from
-            t_video_collection
-        where
-            videoId = #{videoId}
+        delete
+        from t_video_collection
+        where videoId = #{videoId}
           and userId = #{userId}
     </delete>
 
     <select id="getVideoCollections" parameterType="java.lang.Long" resultType="java.lang.Long">
-        select
-            count(1)
-        from
-            t_video_collection
-        where
-            videoId = #{videoId}
+        select count(1)
+        from t_video_collection
+        where videoId = #{videoId}
     </select>
 
     <select id="getVideoCollectionByVideoIdAndUserId" resultType="com.moon.tinybilibili.domain.VideoCollection">
-        select
-            *
-        from
-            t_video_collection
-        where
-            videoId = #{videoId}
+        select *
+        from t_video_collection
+        where videoId = #{videoId}
           and userId = #{userId}
     </select>
 
     <select id="getVideoCoinByVideoIdAndUserId" resultType="com.moon.tinybilibili.domain.VideoCoin">
-        select
-            *
-        from
-            t_video_coin
-        where
-            videoId = #{videoId}
+        select *
+        from t_video_coin
+        where videoId = #{videoId}
           and userId = #{userId}
     </select>
 
     <insert id="addVideoCoin" parameterType="com.moon.tinybilibili.domain.VideoCoin">
-        insert into
-            t_video_coin(
-            userId,
-            videoId,
-            amount,
-            createTime
-        )values(
-                   #{userId},
-                   #{videoId},
-                   #{amount},
-                   #{createTime}
-               )
+        insert into t_video_coin(userId,
+                                 videoId,
+                                 amount,
+                                 createTime)
+        values (#{userId},
+                #{videoId},
+                #{amount},
+                #{createTime})
     </insert>
 
     <update id="updateVideoCoin" parameterType="com.moon.tinybilibili.domain.VideoCoin">
         update
             t_video_coin
-        set
-            amount = #{amount},
+        set amount     = #{amount},
             updateTime = #{updateTime}
-        where
-            videoId = #{videoId}
+        where videoId = #{videoId}
           and userId = #{userId}
     </update>
 
     <select id="getVideoCoinsAmount" parameterType="java.lang.Long" resultType="java.lang.Long">
-        select
-            sum(amount)
-        from
-            t_video_coin
-        where
-            videoId = #{videoId}
+        select sum(amount)
+        from t_video_coin
+        where videoId = #{videoId}
     </select>
 
     <insert id="addVideoComment" parameterType="com.moon.tinybilibili.domain.VideoComment">
-        insert into
-            t_video_comment(
-            videoId,
-            userId,
-            comment,
-            replyUserId,
-            rootId,
-            createTime
-        )values(
-                   #{videoId},
-                   #{userId},
-                   #{comment},
-                   #{replyUserId},
-                   #{rootId},
-                   #{createTime}
-               )
+        insert into t_video_comment(videoId,
+                                    userId,
+                                    comment,
+                                    replyUserId,
+                                    rootId,
+                                    createTime)
+        values (#{videoId},
+                #{userId},
+                #{comment},
+                #{replyUserId},
+                #{rootId},
+                #{createTime})
     </insert>
 
     <select id="pageCountVideoComments" parameterType="java.util.Map" resultType="java.lang.Integer">
-        select
-            count(1)
-        from
-            t_video_comment
-        where
-            videoId = #{videoId}
+        select count(1)
+        from t_video_comment
+        where videoId = #{videoId}
           and rootId is null
     </select>
 
-    <select id="pageListVideoComments" parameterType="java.util.Map" resultType="com.moon.tinybilibili.domain.VideoComment">
-        select
-            *
-        from
-            t_video_comment
-        where
-            videoId = #{videoId}
+    <select id="pageListVideoComments" parameterType="java.util.Map"
+            resultType="com.moon.tinybilibili.domain.VideoComment">
+        select *
+        from t_video_comment
+        where videoId = #{videoId}
           and rootId is null
         order by id desc
         limit #{start}, #{limit}
     </select>
 
-    <select id="batchGetVideoCommentsByRootIds" parameterType="java.util.List" resultType="com.moon.tinybilibili.domain.VideoComment">
+    <select id="batchGetVideoCommentsByRootIds" parameterType="java.util.List"
+            resultType="com.moon.tinybilibili.domain.VideoComment">
         select
         *
         from
@@ -263,38 +214,28 @@
     </select>
 
     <select id="getVideoDetails" parameterType="java.lang.Long" resultType="com.moon.tinybilibili.domain.Video">
-        select
-            *
-        from
-            t_video
-        where
-            id = #{id}
+        select *
+        from t_video
+        where id = #{id}
     </select>
 
     <insert id="addVideoView" parameterType="com.moon.tinybilibili.domain.VideoView">
-        insert into
-            t_video_view(
-            videoId,
-            userId,
-            clientId,
-            ip,
-            createTime
-        )values(
-                   #{videoId},
-                   #{userId},
-                   #{clientId},
-                   #{ip},
-                   #{createTime}
-               )
+        insert into t_video_view(videoId,
+                                 userId,
+                                 clientId,
+                                 ip,
+                                 createTime)
+        values (#{videoId},
+                #{userId},
+                #{clientId},
+                #{ip},
+                #{createTime})
     </insert>
 
     <select id="getVideoViewCounts" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        select
-            count(1)
-        from
-            t_video_view
-        where
-            videoId = #{videoId}
+        select count(1)
+        from t_video_view
+        where videoId = #{videoId}
     </select>
 
     <select id="getVideoView" parameterType="java.util.Map" resultType="com.moon.tinybilibili.domain.VideoView">
@@ -319,17 +260,15 @@
     </select>
 
     <select id="getAllUserPreference" resultType="com.moon.tinybilibili.domain.UserPreference">
-        select
-            userId,
-            videoId,
-            sum(case operationType
-                    when '0' then 6
-                    when '1' then 2
-                    when '2' then 2
-                    else 0 end
-                ) as `value`
-        from
-            t_video_operation
+        select userId,
+               videoId,
+               sum(case operationType
+                       when '0' then 6
+                       when '1' then 2
+                       when '2' then 2
+                       else 0 end
+                   ) as `value`
+        from t_video_operation
         group by userId, videoId
     </select>
 
@@ -366,7 +305,8 @@
         </foreach>
     </insert>
 
-    <select id="getVideoBinaryImages" parameterType="java.util.Map" resultType="com.moon.tinybilibili.domain.VideoBinaryPicture">
+    <select id="getVideoBinaryImages" parameterType="java.util.Map"
+            resultType="com.moon.tinybilibili.domain.VideoBinaryPicture">
         select
         *
         from
@@ -381,16 +321,14 @@
         </if>
     </select>
 
-    <select id="getVideoTagsByVideoId" parameterType="java.lang.Long" resultType="com.moon.tinybilibili.domain.VideoTag">
-        select
-            tvt.videoId,
-            tvt.tagId,
-            tt.name tagName
-        from
-            t_video_tag tvt
-                left join t_tag tt on tvt.tagId = tt.id
-        where
-            tvt.videoId = #{videoId}
+    <select id="getVideoTagsByVideoId" parameterType="java.lang.Long"
+            resultType="com.moon.tinybilibili.domain.VideoTag">
+        select tvt.videoId,
+               tvt.tagId,
+               tt.name tagName
+        from t_video_tag tvt
+                 left join t_tag tt on tvt.tagId = tt.id
+        where tvt.videoId = #{videoId}
     </select>
 
     <delete id="deleteVideoTags">
