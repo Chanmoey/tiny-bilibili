@@ -1,5 +1,6 @@
 package com.moon;
 
+import com.moon.tinybilibili.service.websocket.WebSocketService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -16,5 +17,6 @@ public class TinyBilibiliApp {
         ApplicationContext app = SpringApplication.run(
                 TinyBilibiliApp.class, args
         );
+        WebSocketService.setApplicationContext(app);
     }
 }
