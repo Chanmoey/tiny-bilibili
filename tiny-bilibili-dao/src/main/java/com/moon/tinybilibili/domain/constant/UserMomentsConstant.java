@@ -13,4 +13,8 @@ public class UserMomentsConstant {
     public static final String TOPIC_MOMENTS = "Topic-Moments";
 
     public static final String USER_SUBSCRIBED_MOMENT_PRE_KEY = "subscribed-";
+
+    public static final String GROUP_DANMUS = "DanmusGroup";
+
+    public static final String TOPIC_DANMUS = "Topic-Danmus";
 }

@@ -1,6 +1,7 @@
 package com.moon.tinybilibili.service;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.moon.tinybilibili.dao.DanmuDao;
@@ -45,7 +46,7 @@ public class DanmuService {
         String value = redisTemplate.opsForValue().get(key);
         List<Danmu> list;
         if (!StringUtil.isNullOrEmpty(value)) {
-            list = JSONArray.parseArray(value, Danmu.class);
+            list = JSON.parseArray(value, Danmu.class);
             if (!StringUtil.isNullOrEmpty(startTime)
                     && !StringUtil.isNullOrEmpty(endTime)) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
