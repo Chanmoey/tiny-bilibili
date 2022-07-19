@@ -3,6 +3,7 @@ package com.moon.tinybilibili.api;
 import com.alibaba.fastjson.JSONObject;
 import com.moon.tinybilibili.api.support.UserSupport;
 import com.moon.tinybilibili.domain.*;
+import com.moon.tinybilibili.service.ElasticsearchService;
 import com.moon.tinybilibili.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,9 @@ public class VideoApi {
     @Autowired
     private UserSupport userSupport;
 
+    @Autowired
+    private ElasticsearchService elasticsearchService;
+
     /**
      * 视频投稿
      */
@@ -34,6 +38,8 @@ public class VideoApi {
         Long userId = userSupport.getCurrentUserId();
         video.setUserId(userId);
         videoService.addVideos(video);
+        // video必须先存入数据库，生成了ID后才能存储到Elasticsearch中
+        elasticsearchService.addVideo(video);
         return JsonResponse.success();
     }
 
