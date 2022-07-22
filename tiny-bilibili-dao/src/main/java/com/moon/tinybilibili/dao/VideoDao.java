@@ -62,4 +62,9 @@ public interface VideoDao {
 
     Video getVideoDetails(Long videoId);
 
+    VideoView getVideoView(Map<String, Object> params);
+
+    Integer addVideoView(VideoView videoView);
+
+    Integer getVideoViewCounts(Long videoId);
 }
