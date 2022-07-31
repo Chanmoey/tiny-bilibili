@@ -5,6 +5,7 @@ import com.moon.tinybilibili.api.support.UserSupport;
 import com.moon.tinybilibili.domain.*;
 import com.moon.tinybilibili.service.ElasticsearchService;
 import com.moon.tinybilibili.service.VideoService;
+import org.apache.mahout.cf.taste.common.TasteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -211,4 +212,13 @@ public class VideoApi {
         return new JsonResponse<>(count);
     }
 
+    /**
+     * 视频内容推荐
+     */
+    @GetMapping("/recommendations")
+    public JsonResponse<List<Video>> recommend() throws TasteException {
+        Long userId = userSupport.getCurrentUserId();
+        List<Video> list = videoService.recommend(userId);
+        return new JsonResponse<>(list);
+    }
 }
